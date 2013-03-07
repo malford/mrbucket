@@ -27,7 +27,16 @@ conn = boto.connect_s3(aws_access_key, aws_secret_access_key)
 bucket = conn.lookup(results.bucket_name)
 
 total_bytes = 0
-for key in bucket:
-    total_bytes += key.size
-print(total_bytes)
-print size(total_bytes, system=verbose)
+
+try:
+    for key in bucket:
+        total_bytes += key.size
+except TypeError:
+    print "Something is incorrect with the bucket name you provided. Here are the ones I know of:"
+    print conn.get_all_buckets()
+    sys.exit(1)
+
+print "This bucket is using %s bytes." % total_bytes
+print "Or approximately %s" % size(total_bytes, system=verbose)
+
+sys.exit(0)
