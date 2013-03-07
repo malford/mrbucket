@@ -7,6 +7,14 @@ import os
 import argparse
 import sys
 from hurry.filesize import size
+from hurry.filesize import verbose
+
+parser = argparse.ArgumentParser(description='Mrbucket is a script to determine S3 usage. It\'s buckets of fun!')
+
+parser.add_argument('-b', action='store', dest='bucket_name',
+                    required=True, help='name of bucket to get size of')
+
+results = parser.parse_args()
 
 try:
     aws_access_key = os.environ["AWS_ACCESS_KEY"]
@@ -16,9 +24,10 @@ except KeyError:
     sys.exit(1)
 
 conn = boto.connect_s3(aws_access_key, aws_secret_access_key)
-bucket = conn.lookup('akiaj5id5wjv45cdcy5acomhaystacksoftwarearq')
+bucket = conn.lookup(results.bucket_name)
 
 total_bytes = 0
 for key in bucket:
     total_bytes += key.size
-print size(total_bytes)
+print(total_bytes)
+print size(total_bytes, system=verbose)
