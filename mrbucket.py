@@ -30,10 +30,13 @@ bucket = conn.lookup(results.bucket_name)
 total_bytes = 0
 
 try:
-    keylist = []
+    key_tuple = {}
     for key in bucket.list():
         total_bytes += key.size
-        print "%s %s %s" % (key.name.encode('utf-8'), size(key.size, system=verbose), key.last_modified)
+        key_tuple[key.name.encode('utf-8'), size(key.size, system=verbose), key.last_modified]
+        # key_info = (key.name.encode('utf-8'), size(key.size, system=verbose), key.last_modified)
+        print key_tuple
+        keylist.append(key_info)
 except TypeError:
     print "Something is incorrect with the bucket name you provided. Here are the ones I know of:"
     print conn.get_all_buckets()
