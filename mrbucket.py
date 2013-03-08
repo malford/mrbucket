@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser(description='Mrbucket is a script to determine 
 
 parser.add_argument('-b', action='store', dest='bucket_name',
                     required=True, help='name of bucket to get size of')
+parser.add_argument('-d', action='store', dest='date', help='name of bucket to get size of')
 
 results = parser.parse_args()
 
@@ -29,13 +30,16 @@ bucket = conn.lookup(results.bucket_name)
 total_bytes = 0
 
 try:
-    for key in bucket:
+    keylist = []
+    for key in bucket.list():
         total_bytes += key.size
+        print "%s %s %s" % (key.name.encode('utf-8'), size(key.size, system=verbose), key.last_modified)
 except TypeError:
     print "Something is incorrect with the bucket name you provided. Here are the ones I know of:"
     print conn.get_all_buckets()
     sys.exit(1)
 
+print ' ' 
 print "This bucket is using %s bytes." % total_bytes
 print "Or approximately %s" % size(total_bytes, system=verbose)
 
