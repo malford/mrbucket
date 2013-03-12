@@ -2,12 +2,8 @@
 # right now this script reports usage of an s3 bucket in gigs
 
 # import some modules
-import boto
-import os
-import argparse
-import sys
-from hurry.filesize import size
-from hurry.filesize import verbose
+import boto, os, argparse, sys
+from hurry.filesize import size, verbose
 from datetime import datetime
 
 # setup argparse
@@ -39,8 +35,7 @@ try:
         total_bytes += key.size
         key_info = (key.name.encode('utf-8'), key.size, datetime.strptime(key.last_modified.encode('utf-8'), "%Y-%m-%dT%H:%M:%S.000Z"))
         keylist.append(key_info)
-# if the bucket name provided is in corect list out the buckets that
-# we know
+# if the bucket name provided is in corect list out the buckets that we know
 except TypeError:
     print "Something is incorrect with the bucket name you provided. Here are the ones I know of:"
     print conn.get_all_buckets()
