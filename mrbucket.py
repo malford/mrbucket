@@ -36,7 +36,7 @@ try:
         key_info = (key.name.encode('utf-8'), key.size, datetime.strptime(key.last_modified.encode('utf-8'), "%Y-%m-%dT%H:%M:%S.000Z"))
         keylist.append(key_info)
 # if the bucket name provided is in corect list out the buckets that we know
-except TypeError:
+except (TypeError, AttributeError):
     print "Something is incorrect with the bucket name you provided. Here are the ones I know of:"
     print conn.get_all_buckets()
     sys.exit(1)
@@ -50,7 +50,7 @@ elif results.date:
     print '\n'.join(str(s3_key) for s3_key in keylist)
 
 # print out the total bucket usage
-print '--------------------------------' 
+print '------------------------------------' 
 print "This bucket is using %s bytes." % total_bytes
 print "Or approximately %s" % size(total_bytes, system=verbose)
 
