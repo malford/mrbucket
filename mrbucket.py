@@ -35,11 +35,11 @@ try:
         total_bytes += key.size
         key_info = (key.name.encode('utf-8'), key.size, datetime.strptime(key.last_modified.encode('utf-8'), "%Y-%m-%dT%H:%M:%S.000Z"))
         keylist.append(key_info)
-# if the bucket name provided is in corect list out the buckets that we know
+        # if the bucket name provided is in corect list out the buckets that we know
 except (TypeError, AttributeError):
-    print "Something is incorrect with the bucket name you provided. Here are the ones I know of:"
-    print conn.get_all_buckets()
-    sys.exit(1)
+        print "Something is incorrect with the bucket name you provided. Here are the ones I know of:"
+        print conn.get_all_buckets()
+        sys.exit(1)
 
 # if s option or d option were used sort the keys and print them out
 if results.size:
